@@ -27,7 +27,7 @@ const markers = {};
 
 socket.on("newLocation", (data) => {
     const { id, latitude, longitude } = data;
-    map.setView([latitude, longitude], 16);
+    map.setView([latitude, longitude], 18);
     const popupContent = `<b>User ${id}</b><br>Latitude: ${latitude}<br>Longitude: ${longitude}`;
     
     if (markers[id]) {
