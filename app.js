@@ -17,14 +17,22 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.on('sendLocation', function(data) {
-        console.log(data);
-        socket.emit('newLocation',{id: socket.id, ...data} );
+    console.log('A user connected');
+
+    socket.on('sendLocation', (data) => {
+        console.log('Received location:', data);
+        // Emit the received location data to all connected clients
+        io.emit('newLocation', {
+            id: socket.id, // Use socket.id or another identifier
+            latitude: data.latitude,
+            longitude: data.longitude
+        });
     });
-    
-    socket.on('disconnect', function() {
-        io.emit('user-disconnected', socket.id)
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+        // Optionally notify clients that this user has disconnected
+        io.emit('user-disconnected', socket.id);
     });
 });
 

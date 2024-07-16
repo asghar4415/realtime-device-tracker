@@ -11,7 +11,7 @@ if (navigator.geolocation) {
         },
         {
             enableHighAccuracy: true,
-            timeout: 5000,
+            timeout: 10000,
             maximumAge: 0
         }
     );
@@ -27,17 +27,17 @@ const markers = {};
 
 socket.on("newLocation", (data) => {
     const { id, latitude, longitude } = data;
+    // console.log(`Received location from user ${id}: ${latitude}, ${longitude}`);
     map.setView([latitude, longitude], 18);
     const popupContent = `<b>User ${id}</b><br>Latitude: ${latitude}<br>Longitude: ${longitude}`;
-    
-    if (markers[id]) {
-        markers[id].setLatLng([latitude, longitude]);
-        markers[id].getPopup().setContent(popupContent);
-        markers[id].openPopup(); 
-    } else {
+  
+    if (!markers[id]) {
         markers[id] = L.marker([latitude, longitude]).addTo(map);
-        markers[id].bindPopup(popupContent).openPopup();
+    } else {
+        markers[id].setLatLng([latitude, longitude]);
     }
+    // markers[id].bindPopup(popupContent);
+
 });
 
 socket.on("user-disconnected", (id) => {
