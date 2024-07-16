@@ -1,0 +1,31 @@
+import express from "express"
+import { LoginController, signupController } from "../controllers/authController.js";
+import { authenticateToken } from "../middleware/authMiddleware.js";
+const router = express.Router()
+
+
+
+// AUTH API
+router.post("/signup" , signupController)
+router.post("/login" , LoginController)
+
+router.get('/', (req, res) => {
+    res.render('index'); 
+}
+);
+router.get('/signup', (req, res) => {
+    res.render('signup'); 
+}
+);
+router.get('/dashboard',authenticateToken, (req, res) => {
+    res.render('dashboard', { user: req.user }); 
+  
+});
+
+
+
+router.get("/", (request, response) => {
+    response.send("HELLO SERVER MVC")
+})
+
+export default router
