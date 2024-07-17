@@ -10,7 +10,9 @@ router.post("/signup" , signupController)
 router.post("/login" , LoginController)
 
 router.get('/', (req, res) => {
-    res.render('index'); 
+    res.json({ message: "Hello World" });
+    //login page
+
 }
 );
 router.get('/signup', (req, res) => {
@@ -23,9 +25,5 @@ router.get('/dashboard',authenticateToken, (req, res) => {
 });
 
 
-
-router.get("/", (request, response) => {
-    response.send("HELLO SERVER MVC")
-})
 
 export default router
