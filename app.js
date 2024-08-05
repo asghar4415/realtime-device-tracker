@@ -10,7 +10,7 @@ import router from "./routes/route.js";
 import jwt from 'jsonwebtoken';
 
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -15,10 +15,7 @@ router.get('/', (req, res) => {
 
 }
 );
-router.get('/signup', (req, res) => {
-    res.render('signup'); 
-}
-);
+
 router.get('/dashboard',authenticateToken, (req, res) => {
     res.render('dashboard', { user: req.user }); 
   

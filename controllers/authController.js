@@ -11,14 +11,11 @@ export const signupController = async (request, response) => {
 
     try {
         // console.log(request.body, "request.body")
-        console.log("step 1 ")
         const { fullName, phoneNumber, email, password } = request.body;
         console.log(fullName, phoneNumber, email, password);
 
         if (!fullName ||
-            !age ||
             !phoneNumber ||
-            !gender ||
             !email ||
             !password) {
             response.json({
@@ -31,7 +28,6 @@ export const signupController = async (request, response) => {
         const hashPass = await bcrypt.hash(password, 10)
 
         const user = await UserModel.findOne({ email })
-        // console.log(user, "user")
         if (user) {
             response.json({
                 message: "email address already in use!",
@@ -39,8 +35,6 @@ export const signupController = async (request, response) => {
             })
             return
         }
-        // console.log("hashPass", hashPass)
-        console.log("step 2 ")
 
         const obj = {
             ...request.body,
@@ -48,15 +42,14 @@ export const signupController = async (request, response) => {
         }
 
         const userResponse = await UserModel.create(obj)
-        // console.log("response", userResponse)
+        console.log("response", userResponse)
 
        
        
-console.log("step 5 ")
         response.json({
             data: userResponse,
             message: "successfully signup!",
-            status: true
+            status: 200
         }) 
     } catch (error) {
         response.json({
