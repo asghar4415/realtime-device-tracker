@@ -63,6 +63,7 @@ export const signupController = async (request, response) => {
 export const LoginController = async (request, response) => {
     try {
         const { email, password } = request.body
+        // console.log(email, password)
 
         if (!email || !password) {
             response.json({
@@ -74,7 +75,7 @@ export const LoginController = async (request, response) => {
 
 
         const user = await UserModel.findOne({ email })
-        console.log("user", user)
+        // console.log("user", user)
         if (!user) {
             response.json({
                 message: "Email or Password not valid!",
@@ -85,7 +86,7 @@ export const LoginController = async (request, response) => {
         }
 
         const comparePass = await bcrypt.compare(password, user.password)
-        console.log("comparePass", comparePass)
+        // console.log("comparePass", comparePass)
 
         if (!comparePass) {
             response.json({
@@ -166,4 +167,29 @@ export const OTPVerification = async (request, response) => {
         })
     }
 }
-
+export const getUserData = async (request, response) => {
+    const email = request.query.email;  
+    
+    try {
+        const user = await UserModel.findOne({ email }); 
+        if (user) {
+            response.json({
+                message: "User Data!",
+                status: true,
+                data: user
+            });
+        } else {
+            response.json({
+                message: "User not found",
+                status: false,
+                data: [],
+            });
+        }
+    } catch (error) {
+        response.json({
+            message: error.message,
+            status: false,
+            data: [],
+        });
+    }
+};

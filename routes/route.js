@@ -1,6 +1,7 @@
 import express from "express"
 import { LoginController, signupController } from "../controllers/authController.js";
 import { authenticateToken } from "../middleware/authMiddleware.js";
+import { getUserData } from "../controllers/authController.js";
 const router = express.Router()
 
 
@@ -9,6 +10,7 @@ const router = express.Router()
 router.post("/signup" , signupController)
 router.post("/login" , LoginController)
 
+
 router.get('/', (req, res) => {
     res.json({ message: "Hello World" });
     //login page
@@ -16,10 +18,7 @@ router.get('/', (req, res) => {
 }
 );
 
-router.get('/dashboard',authenticateToken, (req, res) => {
-    res.render('dashboard', { user: req.user }); 
-  
-});
+router.get('/dashboard', getUserData);
 
 
 
