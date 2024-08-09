@@ -1,7 +1,8 @@
 import express from "express"
-import { LoginController, signupController } from "../controllers/authController.js";
+import { addMember, LoginController, signupController } from "../controllers/authController.js";
 import { authenticateToken } from "../middleware/authMiddleware.js";
 import { getUserData } from "../controllers/authController.js";
+
 const router = express.Router()
 
 
@@ -19,6 +20,7 @@ router.get('/', (req, res) => {
 );
 
 router.get('/dashboard', getUserData);
+router.post('/addmember', addMember);
 
 
 

@@ -169,6 +169,7 @@ export const OTPVerification = async (request, response) => {
 }
 export const getUserData = async (request, response) => {
     const email = request.query.email;  
+    // console.log(email);
     
     try {
         const user = await UserModel.findOne({ email }); 
@@ -193,3 +194,68 @@ export const getUserData = async (request, response) => {
         });
     }
 };
+
+export const addMember = async (request, response) => {
+    const { email, memberemail } = request.body;
+    const memberData = []; // Initialize as an array
+    // console.log(email, memberemail);
+    
+    try {
+        // Find the member in the database
+        const member = await UserModel.findOne({ email: memberemail });
+
+        if (member) {
+            // Prepare member data
+            memberData.push({
+                fullName: member.fullName,
+                phoneNumber: member.phoneNumber,
+                email: member.email,
+                live: false
+            });
+        } else {
+            return response.json({
+                message: "Member not found",
+                status: false,
+                data: [],
+            });
+        }
+
+        //check if the user is already added
+
+        const addeduser = await UserModel.findOne({ email });
+        if (addeduser.membersadded.length > 0) {
+            for (let i = 0; i < addeduser.membersadded.length; i++) {
+                if (addeduser.membersadded[i].email === memberemail) {
+                    return response.json({
+                        message: "Member already added",
+                        status: false,
+                        data: [],
+                    });
+                }
+            }
+        }
+        const user = await UserModel.findOneAndUpdate(
+            { email: email },
+            {
+                $push: { membersadded: memberData[0] } // Use $push to add the member to an array
+            },
+            { new: true } // Return the updated document
+        );
+
+        // console.log("Updated User:", user);
+
+        response.json({
+            message: "Member Added!",
+            status: true,
+            data: user
+        });
+
+    } catch (error) {
+        console.error('Error adding member:', error);
+        response.json({
+            message: error.message,
+            status: false,
+            data: [],
+        });
+    }
+}
