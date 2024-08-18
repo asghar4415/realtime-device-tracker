@@ -199,7 +199,14 @@ export const addMember = async (request, response) => {
     const { email, memberemail } = request.body;
     const memberData = []; // Initialize as an array
     // console.log(email, memberemail);
-    
+    if(memberemail === email){
+        return response.json({
+            message: "You can't add yourself",
+            status: false,
+            data: [],
+        });
+    }
+
     try {
         // Find the member in the database
         const member = await UserModel.findOne({ email: memberemail });

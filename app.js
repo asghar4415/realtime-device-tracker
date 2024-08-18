@@ -3,11 +3,11 @@ import { createServer } from 'http';
 import path from 'path';
 import { Server } from 'socket.io';
 import mongoose from 'mongoose';
-import connectMongoDB from "./connection.js";
 import helmet from 'helmet';
 import cors from 'cors';
 import router from "./routes/route.js";
 import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 
 const app = express();
 const PORT = 5000;
@@ -17,8 +17,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(cors());
 
+const uri = "mongodb+srv://cadet1418:Q1JsEbi974lPJUe8@cluster0.tso4c.mongodb.net/";
 
-connectMongoDB("realtime-location");
+
+mongoose.connect(uri);
+mongoose.connection.on("connected", () => console.log("MongoDB connected"));
+mongoose.connection.on("error", (err) => console.log("Error connecting to DB:", err));
 
 const server = createServer(app);
 const io = new Server(server);
