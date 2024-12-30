@@ -1,7 +1,8 @@
-import express from "express"
-import { addMember, LoginController, signupController } from "../controllers/authController.js";
+import express from "express";
+
+import { addMember, LoginController, signupController, getUserData, turnONlive, turnOFFlive } from "../controllers/authController.js";
 import { authenticateToken } from "../middleware/authMiddleware.js";
-import { getUserData } from "../controllers/authController.js";
+
 
 const router = express.Router()
 
@@ -13,14 +14,14 @@ router.post("/login" , LoginController)
 
 
 router.get('/', (req, res) => {
-    res.json({ message: "Hello World" });
-    //login page
-
+    res.json({ message: "Hello World" });   
 }
 );
 
 router.get('/dashboard', getUserData);
 router.post('/addmember', addMember);
+router.post('/golive', turnONlive);
+router.post('/endlive', turnOFFlive);
 
 
 

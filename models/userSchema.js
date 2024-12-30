@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema({
     createAt: {
         type: Date,
         default: Date.now()
+    },
+    live: {
+        type: Boolean,
+        default: false
     }
 })
 

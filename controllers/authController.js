@@ -266,3 +266,73 @@ export const addMember = async (request, response) => {
         });
     }
 }
+// Turn ON live API
+export const turnONlive = async (request, response) => {
+    const { email } = request.body;
+    console.log("api hit");
+    
+    try {
+      const user = await UserModel.findOne({ email: email });
+  
+      if (user) {
+        const updatedUser = await UserModel.findOneAndUpdate(
+          { email: email }, // Condition to find the user
+          { live: true }, // Update to set live status to true
+          { new: true } // Return the updated document
+        );
+  
+        response.json({
+          message: "User is live",
+          status: true,
+          data: updatedUser
+        });
+      } else {
+        response.json({
+          message: "User not found",
+          status: false,
+          data: []
+        });
+      }
+    } catch (error) {
+      response.json({
+        message: error.message,
+        status: false,
+        data: []
+      });
+    }
+  };
+  
+  // Turn OFF live API
+  export const turnOFFlive = async (request, response) => {
+    const { email } = request.body;
+    try {
+      const user = await UserModel.findOne({ email: email });
+  
+      if (user) {
+        const updatedUser = await UserModel.findOneAndUpdate(
+          { email: email }, // Condition to find the user
+          { live: false }, // Update to set live status to false
+          { new: true } // Return the updated document
+        );
+  
+        response.json({
+          message: "User is offline",
+          status: true,
+          data: updatedUser
+        });
+      } else {
+        response.json({
+          message: "User not found",
+          status: false,
+          data: []
+        });
+      }
+    } catch (error) {
+      response.json({
+        message: error.message,
+        status: false,
+        data: []
+      });
+    }
+  };
+  
